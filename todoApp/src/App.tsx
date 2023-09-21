@@ -1,20 +1,30 @@
+import { useState } from 'react'
 import './App.css'
+import crypto from 'crypto'
+import TodoForm  from './features/TodoForm'
+import TodoList from './features/TodoList';
 
 function App() {
+
+  const [todos, setTodos] = useState([]);
+
+  function addTodo(title) {
+    setTodos((currentTodos) => {
+      return [
+        ...currentTodos,
+        {
+          id: crypto.randomUUID(),
+          title: title,
+          completed: false
+        }
+      ]
+    })
+  }
+
   return (
     <>
-      <form className='new-ToDo-item'>
-        <div className='form-row'>
-          <label htmlFor="item">Enter ToDo</label>
-          <input type="text" name="todo" id="item" />
-        </div>
-        <button className="btn">Add</button>
-      </form>
-      <h1 className="header">ToDo List</h1>
-      <li>
-        <label htmlFor="isCompleted"> Item </label>
-        <input type="checkbox" name="isCompleted" id="isCompleted" />
-      </li>
+      <TodoForm onSubmit={addTodo}/>
+      <TodoList/>
     </>
   )
 }
